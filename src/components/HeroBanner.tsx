@@ -8,9 +8,10 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 const project = projects[0];
 
 /**
- * Hero banner — single project only.
- * Page-load entrance + scroll reveal of description.
- * No crossfade to other project images inside this section.
+ * Classic hero motion:
+ * — soft page-load entrance
+ * — pinned scroll: title holds, description fades in
+ * — gentle image drift (no project switching)
  */
 export default function HeroBanner() {
   const rootRef = useRef<HTMLElement>(null);
@@ -23,42 +24,52 @@ export default function HeroBanner() {
       const title = root.querySelector<HTMLElement>(".hero__title-item");
       const description = root.querySelector<HTMLElement>(".hero__desc-item");
       const frame = root.querySelector<HTMLElement>(".hero__frame");
+      const image = root.querySelector<HTMLElement>(".hero__image");
+      const plus = root.querySelector<HTMLElement>(".hero__plus");
+      const bar = root.querySelector<HTMLElement>(".hero__bar");
+      const rail = root.querySelector<HTMLElement>(".hero__rail");
 
-      gsap.set(description, { autoAlpha: 0, y: 28 });
-      gsap.set(title, { autoAlpha: 1, y: 0 });
+      gsap.set(description, { autoAlpha: 0, y: 20 });
+      gsap.set([title, frame, plus, bar, rail], { autoAlpha: 1 });
 
-      // ---------- Page-load entrance ----------
+      // ---------- Page-load (classic fade / rise) ----------
       const intro = gsap.timeline({
-        defaults: { ease: "power3.out" },
+        defaults: { ease: "power2.out" },
       });
 
       intro
-        .from(".hero__rail", { x: -40, autoAlpha: 0, duration: 0.9 }, 0)
-        .from(frame, { scale: 1.05, duration: 1.35 }, 0.1)
-        .from(title, { y: 40, autoAlpha: 0, duration: 1 }, 0.25)
-        .from(".hero__bar", { y: 36, autoAlpha: 0, duration: 0.85 }, 0.45)
-        .from(".hero__plus", { scale: 0, autoAlpha: 0, duration: 0.55 }, 0.55);
+        .from(rail, { x: -24, autoAlpha: 0, duration: 1 }, 0)
+        .from(frame, { autoAlpha: 0, scale: 1.03, duration: 1.4 }, 0.05)
+        .from(image, { scale: 1.06, duration: 1.6 }, 0.05)
+        .from(title, { y: 28, autoAlpha: 0, duration: 1.1 }, 0.35)
+        .from(bar, { y: 24, autoAlpha: 0, duration: 0.9 }, 0.55)
+        .from(plus, { autoAlpha: 0, duration: 0.7 }, 0.7);
 
-      // ---------- Scroll: title → reveal description (same image) ----------
+      // ---------- Scroll story (same image only) ----------
       const story = gsap.timeline({
-        defaults: { ease: "power2.out" },
+        defaults: { ease: "none" },
         scrollTrigger: {
           id: "hero-banner",
           trigger: root,
           start: "top top",
-          end: "+=90%",
+          end: "+=85%",
           pin: true,
           pinSpacing: true,
-          scrub: 0.8,
+          scrub: 1.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
       story
-        .to({}, { duration: 0.35 })
-        .to(description, { autoAlpha: 1, y: 0, duration: 0.7 })
-        .to({}, { duration: 0.45 });
+        // hold on title
+        .to({}, { duration: 0.4 })
+        // description fades up classically
+        .to(description, { autoAlpha: 1, y: 0, duration: 0.8, ease: "power1.out" })
+        // soft image drift while reading
+        .to(image, { scale: 1.04, duration: 1.2, ease: "none" }, 0)
+        // brief hold
+        .to({}, { duration: 0.35 });
 
       const refresh = () => ScrollTrigger.refresh();
       requestAnimationFrame(refresh);

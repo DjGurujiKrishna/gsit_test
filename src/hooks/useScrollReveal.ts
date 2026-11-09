@@ -11,17 +11,15 @@ type Options = {
 };
 
 /**
- * Section-scoped scroll reveal.
- * Only animates `[data-reveal]` children inside the section —
- * keeps timelines isolated so sections never interfere.
+ * Classic fade-up reveal, scoped per section.
  */
 export function useScrollReveal<T extends HTMLElement>(options: Options = {}) {
   const ref = useRef<T>(null);
   const {
-    y = 40,
-    stagger = 0.12,
-    start = "top 78%",
-    duration = 0.85,
+    y = 28,
+    stagger = 0.1,
+    start = "top 80%",
+    duration = 1,
   } = options;
 
   useGSAP(
@@ -39,13 +37,12 @@ export function useScrollReveal<T extends HTMLElement>(options: Options = {}) {
         y: 0,
         duration,
         stagger,
-        ease: "power3.out",
+        ease: "power2.out",
         overwrite: "auto",
         scrollTrigger: {
           trigger: root,
           start,
           once: true,
-          // Unique id per section avoids ScrollTrigger collisions
           id: `reveal-${root.id || "section"}`,
         },
       });

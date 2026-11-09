@@ -4,7 +4,11 @@ import OfficeSwitcher from "@/components/OfficeSwitcher";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function CollaborateFooter() {
-  const sectionRef = useScrollReveal<HTMLElement>({ stagger: 0.1 });
+  const sectionRef = useScrollReveal<HTMLElement>({
+    y: 22,
+    stagger: 0.1,
+    duration: 1,
+  });
 
   return (
     <footer

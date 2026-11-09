@@ -5,7 +5,11 @@ import PlusIcon from "@/components/PlusIcon";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function ExpertiseSection() {
-  const sectionRef = useScrollReveal<HTMLElement>({ stagger: 0.14 });
+  const sectionRef = useScrollReveal<HTMLElement>({
+    y: 26,
+    stagger: 0.12,
+    duration: 1,
+  });
 
   return (
     <section id="expertise" ref={sectionRef} className="expertise section-pad">

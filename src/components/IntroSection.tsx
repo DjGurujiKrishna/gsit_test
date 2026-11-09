@@ -3,7 +3,11 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function IntroSection() {
-  const sectionRef = useScrollReveal<HTMLElement>();
+  const sectionRef = useScrollReveal<HTMLElement>({
+    y: 24,
+    stagger: 0.14,
+    duration: 1.05,
+  });
 
   return (
     <section id="about" ref={sectionRef} className="intro section-pad">
