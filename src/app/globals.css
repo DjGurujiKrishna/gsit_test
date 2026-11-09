@@ -607,14 +607,14 @@ img {
   font-weight: 300;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  transition: border-color 0.25s ease;
 }
 
 .office-pill:hover,
 .office-pill.is-active {
-  background: #fff;
-  color: #000;
-  border-color: #fff;
+  background: transparent;
+  color: #fff;
+  border: 1px solid #ffffff;
 }
 
 .collaborate__address {
